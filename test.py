@@ -12,12 +12,12 @@ def all_hparam_combinations(hparam_dict: dict[str, list[int | float]]) -> np.nda
 
 class Config:
     hyperparameters = {
-        "maxAge": [7, 14, 30, 90, 120, 360],
-        "halfAge": [0.1, 0.15, 0.2, 0.3, 0.49],
-        "replyWeight": [0, 1, 2, 4, 8],
-        "reactionWeight": [0, 1, 2, 4, 8],
-        "followWeight": [0, 1, 2, 4, 8],
-        "articleBoost": [0, 1, 2, 4, 8],
+        "var1": [7, 14, 30, 90, 120, 360],
+        "var2": [0.1, 0.15, 0.2, 0.3, 0.49],
+        "var3": [0, 1, 2, 4, 8],
+        "var4": [0, 1, 2, 4, 8],
+        "var5": [0, 1, 2, 4, 8],
+        "var6": [0, 1, 2, 4, 8],
     }
     num_items_shown: int = 25
     num_samples: list[int] = [100, 1000, 5000, 10000, 50000, 100000, 500000]
