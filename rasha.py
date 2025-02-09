@@ -177,7 +177,7 @@ class LevelPromoter:
         self.promote_if_eligible(combination_idx)
 
 class RandomAsynchronousSuccessiveHalvingAlgorithm(BaseOpt):
-    def __init__(self, all_combinations: np.ndarray) -> None:
+    def __init__(self, all_combinations: np.ndarray, **kwargs) -> None:
         super().__init__(all_combinations)
         self.reduction_factor = 2
         self.min_resource_r = 32

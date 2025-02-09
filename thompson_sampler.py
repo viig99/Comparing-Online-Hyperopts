@@ -9,7 +9,7 @@ class NormalInverseGammaThompsonSampler(BaseOpt):
 
     Each arm i has parameters (mu0[i], lambda_[i], alpha[i], beta[i]).
     """
-    def __init__(self, all_combinations: np.ndarray):
+    def __init__(self, all_combinations: np.ndarray, **kwargs):
         super().__init__(all_combinations)
         self.rng = np.random.default_rng()
         

@@ -3,6 +3,7 @@ from itertools import product
 from tqdm.auto import trange
 from rasha import RandomAsynchronousSuccessiveHalvingAlgorithm
 from thompson_sampler import NormalInverseGammaThompsonSampler
+from factorized_bayesian import FactorizedThompsonSampler
 
 def all_hparam_combinations(hparam_dict: dict[str, list[int | float]]) -> np.ndarray:
     keys = list(hparam_dict.keys())
@@ -39,6 +40,7 @@ def test():
 
     algorithms_to_test = [
         RandomAsynchronousSuccessiveHalvingAlgorithm,
+        FactorizedThompsonSampler,
         NormalInverseGammaThompsonSampler
     ]
 
@@ -46,7 +48,7 @@ def test():
     for algorithm_cls in algorithms_to_test:
         print(f"Testing {algorithm_cls.__name__}")
         for num_samples in conf.num_samples:
-            hyper_param_tuner = RandomAsynchronousSuccessiveHalvingAlgorithm(hparam_combinations)
+            hyper_param_tuner = algorithm_cls(hparam_combinations, param_values=list(conf.hyperparameters.values()))
             for _ in trange(num_samples, leave=False):
                 idx_to_try, _ = hyper_param_tuner.sample()
                 current_reward = np.random.normal(reward_means[idx_to_try], 1)
