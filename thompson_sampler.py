@@ -1,5 +1,4 @@
 import numpy as np
-import math
 from base_opt import BaseOpt
 
 class NormalInverseGammaThompsonSampler(BaseOpt):
@@ -24,21 +23,19 @@ class NormalInverseGammaThompsonSampler(BaseOpt):
     def sample(self) -> tuple[int, np.ndarray]:
         """Sample (sigma^2, mu) from each arm's posterior and pick the arm
         with the largest sampled mu."""
-        samples = np.zeros(self.num_arms)
-        for i in range(self.num_arms):
-            # Sample sigma^2 from InvGamma(alpha[i], beta[i]):
-            #   If X ~ Gamma(k=alpha, theta=1/beta), then 1/X ~ InvGamma(...)
-            #   (But np.random.gamma uses shape & scale.)
-            # We want sigma^2 ~ InvGamma(alpha, beta).
-            # This is the same as gamma with shape=alpha, scale=1/beta, then invert:
-            tau = self.rng.gamma(self.alpha[i], 1.0 / self.beta[i])
-            sigma2 = 1.0 / tau
-            # Now sample mu ~ N(mu0[i], sigma^2 / lambda_[i]):
-            mu_samp = self.rng.normal(
-                loc=self.mu0[i],
-                scale=math.sqrt(sigma2 / self.lambda_[i])
-            )
-            samples[i] = mu_samp
+        # Sample sigma^2 from InvGamma(alpha, beta):
+        #   If X ~ Gamma(k=alpha, theta=1/beta), then 1/X ~ InvGamma(...)
+        #   (But np.random.gamma uses shape & scale.)
+        # We want sigma^2 ~ InvGamma(alpha, beta).
+        # This is the same as gamma with shape=alpha, scale=1/beta, then invert:
+        tau = self.rng.gamma(self.alpha, 1.0 / self.beta)
+        sigma2 = 1.0 / tau
+        # Now sample mu ~ N(mu0, sigma^2 / lambda_):
+        mu_samp = self.rng.normal(
+            loc=self.mu0,
+            scale=np.sqrt(sigma2 / self.lambda_)
+        )
+        samples = mu_samp
         return int(np.argmax(samples)), self.all_combinations[np.argmax(samples)]
 
     def update(self, combination_idx: int, reward: float) -> None:
