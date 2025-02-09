@@ -22,29 +22,33 @@ $ python test.py
 ## Results Preview
 ```shell
 Number of arms: 18750
-Real known best arm: 10902
-Best combination: [90.   0.2  2.   1.   0.   2. ]
+Real known best arm: 8539
+Best combination: [30.   0.3  4.   1.   2.   8. ]
 
 Testing RandomAsynchronousSuccessiveHalvingAlgorithm
-#samples: 100, Predicted Best arm: 9896, Rank of predicted best arm: 9091
-#samples: 1000, Predicted Best arm: 574, Rank of predicted best arm: 13827
-#samples: 5000, Predicted Best arm: 17491, Rank of predicted best arm: 1635
-#samples: 10000, Predicted Best arm: 254, Rank of predicted best arm: 11662
-#samples: 50000, Predicted Best arm: 13472, Rank of predicted best arm: 1140
-#samples: 100000, Predicted Best arm: 2711, Rank of predicted best arm: 756
-#samples: 500000, Predicted Best arm: 15737, Rank of predicted best arm: 89
+#samples: 100, Predicted Best arm: 16141, Rank of predicted best arm: 9503
+#samples: 1000, Predicted Best arm: 15745, Rank of predicted best arm: 3341
+#samples: 5000, Predicted Best arm: 2058, Rank of predicted best arm: 503
+#samples: 10000, Predicted Best arm: 2663, Rank of predicted best arm: 7931
+#samples: 50000, Predicted Best arm: 16823, Rank of predicted best arm: 310
+#samples: 100000, Predicted Best arm: 13501, Rank of predicted best arm: 276
+#samples: 500000, Predicted Best arm: 3314, Rank of predicted best arm: 6
 
 Testing FactorizedThompsonSampler
-#samples: 100, Predicted Best arm: 17733, Rank of predicted best arm: 3101                                                                                                                                              
-#samples: 1000, Predicted Best arm: 3842, Rank of predicted best arm: 2361                                                                                                                                              
-#samples: 5000, Predicted Best arm: 10386, Rank of predicted best arm: 604                                                                                                                                              
-#samples: 10000, Predicted Best arm: 15671, Rank of predicted best arm: 1164                                                                                                                                            
-#samples: 50000, Predicted Best arm: 6276, Rank of predicted best arm: 283                                                                                                                                              
-#samples: 100000, Predicted Best arm: 2682, Rank of predicted best arm: 2356                                                                                                                                            
-#samples: 500000, Predicted Best arm: 9621, Rank of predicted best arm: 242 
+#samples: 100, Predicted Best arm: 18665, Rank of predicted best arm: 1896
+#samples: 1000, Predicted Best arm: 12051, Rank of predicted best arm: 586
+#samples: 5000, Predicted Best arm: 1071, Rank of predicted best arm: 398
+#samples: 10000, Predicted Best arm: 12488, Rank of predicted best arm: 921
+#samples: 50000, Predicted Best arm: 6907, Rank of predicted best arm: 1009
+#samples: 100000, Predicted Best arm: 1959, Rank of predicted best arm: 336
+#samples: 500000, Predicted Best arm: 10033, Rank of predicted best arm: 804
 
 Testing NormalInverseGammaThompsonSampler
-#samples: 100, Predicted Best arm: 12461, Rank of predicted best arm: 3532                                                                                                                                              
-#samples: 1000, Predicted Best arm: 178, Rank of predicted best arm: 41                                                                                                                                                 
-#samples: 5000, Predicted Best arm: 8889, Rank of predicted best arm: 1132
+#samples: 100, Predicted Best arm: 6191, Rank of predicted best arm: 663
+#samples: 1000, Predicted Best arm: 6669, Rank of predicted best arm: 690
+#samples: 5000, Predicted Best arm: 840, Rank of predicted best arm: 5562
+#samples: 10000, Predicted Best arm: 4455, Rank of predicted best arm: 987
+#samples: 50000, Predicted Best arm: 9064, Rank of predicted best arm: 13
+#samples: 100000, Predicted Best arm: 14698, Rank of predicted best arm: 320
+#samples: 500000, Predicted Best arm: 13648, Rank of predicted best arm: 94
 ```
