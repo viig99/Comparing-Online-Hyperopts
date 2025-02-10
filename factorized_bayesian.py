@@ -57,32 +57,18 @@ class FactorizedThompsonSampler(BaseOpt):
         along with the indices chosen for each param's value.
         """
         chosen_indices = []
-        chosen_config = []
         
         for i in range(self.n_params):
-            # sample for each possible value j of parameter i
-            samples = []
-            n_vals = len(self.param_values[i])
-            
-            for j in range(n_vals):
-                # sample sigma^2 ~ InvGamma(alpha, beta)
-                tau = self.rng.gamma(self.alpha[i][j], 1.0 / self.beta[i][j])
-                sigma2 = 1.0 / tau
-                # sample mu ~ Normal(mu0, sigma^2 / lambda_)
-                mu_samp = self.rng.normal(
-                    loc=self.mu0[i][j],
-                    scale=math.sqrt(sigma2 / self.lambda_[i][j])
-                )
-                samples.append(mu_samp)
-            
-            best_val_idx = int(np.argmax(samples))
-            chosen_indices.append(best_val_idx)
-            chosen_config.append(self.param_values[i][best_val_idx])
+            tau = self.rng.gamma(self.alpha[i], 1.0 / self.beta[i])
+            sigma2 = 1.0 / tau
+            mu_samp = self.rng.normal(
+                loc=self.mu0[i],
+                scale=np.sqrt(sigma2 / self.lambda_[i])
+            )
+            chosen_indices.append(int(np.argmax(mu_samp)))
 
-        chosen_indices = chosen_indices
         combination_idx = np.ravel_multi_index(chosen_indices, dims=[len(vals) for vals in self.param_values])
-        
-        return int(combination_idx), np.array(chosen_indices)
+        return int(combination_idx), self.all_combinations[combination_idx]
 
     def update(self, combination_idx: int, reward: float) -> None:
         """
@@ -117,4 +103,6 @@ class FactorizedThompsonSampler(BaseOpt):
         Returns the posterior mean estimate of each param-value combination's
         mean reward. This is just mu0[i][j] under the factorized model.
         """
-        return self.sample()
+        best_indices = [np.argmax(self.mu0[i]) for i in range(self.n_params)]
+        combination_idx = int(np.ravel_multi_index(best_indices, dims=[len(vals) for vals in self.param_values]))
+        return combination_idx, self.all_combinations[combination_idx]

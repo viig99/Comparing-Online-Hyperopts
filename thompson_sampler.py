@@ -35,8 +35,7 @@ class NormalInverseGammaThompsonSampler(BaseOpt):
             loc=self.mu0,
             scale=np.sqrt(sigma2 / self.lambda_)
         )
-        samples = mu_samp
-        return int(np.argmax(samples)), self.all_combinations[np.argmax(samples)]
+        return int(np.argmax(mu_samp)), self.all_combinations[np.argmax(mu_samp)]
 
     def update(self, combination_idx: int, reward: float) -> None:
         """
