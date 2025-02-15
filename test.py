@@ -31,7 +31,7 @@ def test():
     print(f"Number of arms: {num_arms}")
     highest_possible_reward = sum(1/(i+1) for i in range(conf.num_items_shown))
 
-    reward_means = np.random.rand(num_arms) * highest_possible_reward
+    reward_means = np.random.uniform(0, highest_possible_reward, size=num_arms)
 
     real_best_arm = np.argmax(reward_means)
     ranks = np.argsort(reward_means)[::-1]
