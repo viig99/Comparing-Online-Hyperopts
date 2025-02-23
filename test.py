@@ -30,8 +30,11 @@ class Config:
     @property
     def num_arms(self) -> int:
         return int(np.prod([len(v) for v in self.hyperparameters.values()]))
-
+    
     def compute_rewards(self, hparam_combinations: np.ndarray) -> np.ndarray:
+        return self._compute_real_world_rewards(hparam_combinations)
+
+    def _compute_real_world_rewards(self, hparam_combinations: np.ndarray) -> np.ndarray:
         best_arm_idx = [np.random.randint(0, len(v)) for v in self.hyperparameters.values()]
         best_values = np.array([v[best_arm_idx[i]] for i, v in enumerate(self.hyperparameters.values())])
         stdevs = np.array([1.0, 0.05, 1.0, 1.0, 1.0, 1.0], dtype=float)
@@ -45,18 +48,13 @@ class Config:
         ])
         Sigma = np.outer(stdevs, stdevs) * rho
         Sigma_inv = np.linalg.inv(Sigma)
-        all_raw = []
-        for combo in hparam_combinations:
-            diff = combo - best_values
-            raw_score = 1 / (1 + (diff @ Sigma_inv @ diff))
-            all_raw.append(raw_score)
-        all_raw = np.array(all_raw)
+        all_raw = np.array([1 / (1 + (diff @ Sigma_inv @ diff)) for combo in hparam_combinations if (diff := combo - best_values) is not None])
         max_raw = np.max(all_raw)
         # Scale so the best combination gets "highest_val"
         scaled_rewards = (all_raw / max_raw) * self.highest_possible_reward
         return scaled_rewards
 
-    def compute_uniform_rewards(self, hparam_combinations: np.ndarray) -> np.ndarray:
+    def _compute_uniform_rewards(self, hparam_combinations: np.ndarray) -> np.ndarray:
         return np.random.uniform(0, self.highest_possible_reward, size=len(hparam_combinations))
 
 def test():
