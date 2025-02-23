@@ -48,7 +48,10 @@ class Config:
         ])
         Sigma = np.outer(stdevs, stdevs) * rho
         Sigma_inv = np.linalg.inv(Sigma)
-        all_raw = np.array([1 / (1 + (diff @ Sigma_inv @ diff)) for combo in hparam_combinations if (diff := combo - best_values) is not None])
+        mean_values = np.array([np.array(v).mean() for v in self.hyperparameters.values()])
+        all_raw = np.array([np.exp(-0.02 * diff @ Sigma_inv @ diff) for combo in hparam_combinations if (diff := (combo - best_values) / mean_values) is not None])
+        frac_low = (all_raw <= 0.1).sum() / len(all_raw)
+        assert frac_low  <= 0.75, f"Too many low scores {frac_low}"
         max_raw = np.max(all_raw)
         # Scale so the best combination gets "highest_val"
         scaled_rewards = (all_raw / max_raw) * self.highest_possible_reward
