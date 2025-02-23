@@ -1,9 +1,9 @@
 import numpy as np
 from itertools import product
 from tqdm.auto import trange
-from rasha import RandomAsynchronousSuccessiveHalvingAlgorithm
-from thompson_sampler import NormalInverseGammaThompsonSampler
-from factorized_bayesian import FactorizedThompsonSampler
+from algos.rasha import RandomAsynchronousSuccessiveHalvingAlgorithm
+from algos.thompson_sampler import NormalInverseGammaThompsonSampler, TopTwoNormalInverseGammaThompsonSampler
+from algos.factorized_bayesian import FactorizedThompsonSampler
 
 def all_hparam_combinations(hparam_dict: dict[str, list[int | float]]) -> np.ndarray:
     keys = list(hparam_dict.keys())
@@ -74,7 +74,8 @@ def test():
     algorithms_to_test = [
         RandomAsynchronousSuccessiveHalvingAlgorithm,
         FactorizedThompsonSampler,
-        NormalInverseGammaThompsonSampler
+        NormalInverseGammaThompsonSampler,
+        TopTwoNormalInverseGammaThompsonSampler
     ]
 
     # Test performance of different algorithms

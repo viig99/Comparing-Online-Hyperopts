@@ -1,5 +1,6 @@
 import numpy as np
-from base_opt import BaseOpt
+from algos.base_opt import BaseOpt
+from algos.ttts import TopTwoThomsonSampler
 
 class NormalInverseGammaThompsonSampler(BaseOpt):
     """
@@ -72,3 +73,8 @@ class NormalInverseGammaThompsonSampler(BaseOpt):
          mu0[i] is the standard posterior estimate of the mean.)
         """
         return int(np.argmax(self.mu0)), self.all_combinations[np.argmax(self.mu0)]
+
+class TopTwoNormalInverseGammaThompsonSampler(TopTwoThomsonSampler):
+
+    def __init__(self, all_combinations: np.ndarray, **kwargs):
+        super().__init__(NormalInverseGammaThompsonSampler, all_combinations, **kwargs)

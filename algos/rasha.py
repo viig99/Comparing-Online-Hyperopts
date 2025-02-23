@@ -1,7 +1,7 @@
 import math
 import numpy as np
 from dataclasses import dataclass
-from base_opt import BaseOpt
+from algos.base_opt import BaseOpt
 
 @dataclass
 class CandidateStats:
