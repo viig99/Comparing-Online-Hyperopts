@@ -1,8 +1,6 @@
 import numpy as np
+from typing import Type
 from algos.base_opt import BaseOpt
-from typing import Type, TypeVar
-
-base = TypeVar('base', bound="BaseOpt")
 
 class TopTwoThomsonSampler:
     """
@@ -15,7 +13,7 @@ class TopTwoThomsonSampler:
     Primarily allows for better exploration, sampling efficiency by not letting the
     same arm be selected twice in a row.
     """
-    def __init__(self, sampler: Type[base], all_combinations: np.ndarray, **kwargs):
+    def __init__(self, sampler: Type[BaseOpt], all_combinations: np.ndarray, **kwargs):
         self.rng = np.random.default_rng()
         self.beta = 0.5
         self.sampler = sampler(all_combinations, **kwargs)
