@@ -2,7 +2,7 @@ import numpy as np
 from typing import Type
 from algos.base_opt import BaseOpt
 
-class TopTwoThomsonSampler:
+class TopTwoThompsonSampler:
     """
     Based on the Top-Two Thompson Sampling algorithm from
     "Simple Bayesian Algorithms for Best-Arm Identification" by Daniel Russo, 2018.

@@ -1,6 +1,6 @@
 import numpy as np
 from algos.base_opt import BaseOpt
-from algos.ttts import TopTwoThomsonSampler
+from algos.ttts import TopTwoThompsonSampler
 
 class FactorizedThompsonSampler(BaseOpt):
     """
@@ -107,6 +107,6 @@ class FactorizedThompsonSampler(BaseOpt):
         combination_idx = int(np.ravel_multi_index(best_indices, dims=[len(vals) for vals in self.param_values]))
         return combination_idx, self.all_combinations[combination_idx]
 
-class TopTwoFactorizedThompsonSampler(TopTwoThomsonSampler):
+class TopTwoFactorizedThompsonSampler(TopTwoThompsonSampler):
     def __init__(self, all_combinations: np.ndarray, **kwargs):
         super().__init__(FactorizedThompsonSampler, all_combinations, **kwargs)
