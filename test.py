@@ -90,6 +90,8 @@ def test():
             predicted_best_arm = hyper_param_tuner.best_known_combination()[0]
             best_arm_rank_index = np.where(ranks == predicted_best_arm)[0][0] + 1
             print(f"#samples: {num_samples}, Predicted Best arm: {predicted_best_arm}, Rank of predicted best arm: {best_arm_rank_index}")
+            if predicted_best_arm == real_best_arm:
+                break
 
 if __name__ == "__main__":
     test()
