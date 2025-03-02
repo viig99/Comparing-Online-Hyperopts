@@ -4,6 +4,7 @@ from tqdm.auto import trange
 from algos.rasha import RandomAsynchronousSuccessiveHalvingAlgorithm
 from algos.thompson_sampler import NormalInverseGammaThompsonSampler, TopTwoNormalInverseGammaThompsonSampler
 from algos.factorized_bayesian import FactorizedThompsonSampler
+from algos.popsearch import PopulationBasedSearch
 
 def all_hparam_combinations(hparam_dict: dict[str, list[int | float]]) -> np.ndarray:
     keys = list(hparam_dict.keys())
@@ -49,7 +50,7 @@ class Config:
         Sigma = np.outer(stdevs, stdevs) * rho
         Sigma_inv = np.linalg.inv(Sigma)
         mean_values = np.array([np.array(v).mean() for v in self.hyperparameters.values()])
-        all_raw = np.array([np.exp(-0.02 * diff @ Sigma_inv @ diff) for combo in hparam_combinations if (diff := (combo - best_values) / mean_values) is not None])
+        all_raw = np.array([np.exp(-0.01 * diff @ Sigma_inv @ diff) for combo in hparam_combinations if (diff := (combo - best_values) / mean_values) is not None])
         frac_low = (all_raw <= 0.1).sum() / len(all_raw)
         assert frac_low  <= 0.75, f"Too many low scores {frac_low}"
         max_raw = np.max(all_raw)
@@ -75,6 +76,7 @@ def test():
     print(f"Best combination: {hparam_combinations[real_best_arm]}")
 
     algorithms_to_test = [
+        PopulationBasedSearch,
         RandomAsynchronousSuccessiveHalvingAlgorithm,
         FactorizedThompsonSampler,
         NormalInverseGammaThompsonSampler,
