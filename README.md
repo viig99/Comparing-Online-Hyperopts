@@ -6,9 +6,9 @@ Assume Rewards are user click reciprocal ranks (continous real reward).
 # Table of Contents
 - [Criteria for Implementation](#criteria-for-implementation)
 - [Algorithm Variants](#algorithm-variants)
+- [Variants / Research for Prototyping](#variants--research-for-prototyping)
 - [Testing](#testing)
 - [Results Preview](#results-preview)
-- [Variants / Research for prototyping](#variants--research-for-prototyping)
 
 ## Criteria for Implementation
 * Sample efficiency
@@ -22,6 +22,14 @@ Assume Rewards are user click reciprocal ranks (continous real reward).
 * **Factorized Thompson Sampling** which assumes hyper-params are low co-variance, use Guassian Process if interactions are expected.
 * [**Top-Two Thompson Sampling**](https://arxiv.org/pdf/1602.08448)
 * [**Population Based Search**](https://arxiv.org/pdf/1711.09846)
+
+## Variants / Research for Prototyping
+- [**CMA-ES with margin**](https://arxiv.org/pdf/2305.00849v1)
+  - And Other [variants](https://arxiv.org/search/cs?searchtype=author&query=Shirakawa,+S)
+- [**Streaming Sparse Gaussian Process Approximations**](https://proceedings.neurips.cc/paper_files/paper/2017/file/f31b20466ae89669f9741e047487eb37-Paper.pdf)
+- [**Limited-Memory Matrix Adaptation
+for Large Scale Black-box Optimization**](https://arxiv.org/pdf/1705.06693)
+- [**Illuminating search spaces by mapping elites**](https://arxiv.org/pdf/1504.04909)
 
 ## Testing
 ```bash
@@ -62,11 +70,3 @@ Testing TopTwoNormalInverseGammaThompsonSampler
 #samples: 10000, Predicted Best arm: 14332, Rank of predicted best arm: 1578
 #samples: 50000, Predicted Best arm: 15153, Rank of predicted best arm: 1
 ```
-
-## Variants / Research for prototyping
-- [**CMA-ES with margin**](https://arxiv.org/pdf/2305.00849v1)
-  - And Other [variants](https://arxiv.org/search/cs?searchtype=author&query=Shirakawa,+S)
-- [**Streaming Sparse Gaussian Process Approximations**](https://proceedings.neurips.cc/paper_files/paper/2017/file/f31b20466ae89669f9741e047487eb37-Paper.pdf)
-- [**Limited-Memory Matrix Adaptation
-for Large Scale Black-box Optimization**](https://arxiv.org/pdf/1705.06693)
-- [**Illuminating search spaces by mapping elites**](https://arxiv.org/pdf/1504.04909)
