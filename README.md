@@ -3,6 +3,18 @@ Benchmarking performance of various hyper-parameter tuning algorithms
 
 Assume Rewards are user click reciprocal ranks (continous real reward).
 
+# Table of Contents
+- [Criteria for Implementation](#criteria-for-implementation)
+- [Algorithm Variants](#algorithm-variants)
+- [Testing](#testing)
+- [Results Preview](#results-preview)
+- [Variants / Research for prototyping](#variants--research-for-prototyping)
+
+## Criteria for Implementation
+* Sample efficiency
+* Latency
+* Ease of implementation
+
 ## Algorithm Variants
 
 * [**Thompson Sampler**](https://www.cs.ubc.ca/labs/lci/mlrg/slides/2019_summer_6_thompson_sampling.pdf) with Guassian posterior and Normal-Inverse Gamma priors.
@@ -11,12 +23,7 @@ Assume Rewards are user click reciprocal ranks (continous real reward).
 * [**Top-Two Thompson Sampling**](https://arxiv.org/pdf/1602.08448)
 * [**Population Based Search**](https://arxiv.org/pdf/1711.09846)
 
-## Criteria for Testing
-* Sample efficiency
-* Latency
-* Ease of implementation
-
-## Test
+## Testing
 ```bash
 $ python test.py
 ```
