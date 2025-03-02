@@ -11,6 +11,14 @@ Assume Rewards are user click reciprocal ranks (continous real reward).
 * [**Top-Two Thompson Sampling**](https://arxiv.org/pdf/1602.08448)
 * [**Population Based Search**](https://arxiv.org/pdf/1711.09846)
 
+## Variants / Research for prototyping
+- [**CMA-ES with margin**](https://arxiv.org/pdf/2305.00849v1)
+  - And Other [variants](https://arxiv.org/search/cs?searchtype=author&query=Shirakawa,+S)
+- [**Streaming Sparse Gaussian Process Approximations**](https://proceedings.neurips.cc/paper_files/paper/2017/file/f31b20466ae89669f9741e047487eb37-Paper.pdf)
+- [**Limited-Memory Matrix Adaptation
+for Large Scale Black-box Optimization**](https://arxiv.org/pdf/1705.06693)
+- [**Illuminating search spaces by mapping elites**](https://arxiv.org/pdf/1504.04909)
+
 ## Criteria for Testing
 * Sample efficiency
 * Latency
