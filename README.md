@@ -9,6 +9,7 @@ Assume Rewards are user click reciprocal ranks (continous real reward).
 * [**Random Asynchronous Successive Halving Algorithm**](https://arxiv.org/pdf/1810.05934)
 * **Factorized Thompson Sampling** which assumes hyper-params are low co-variance, use Guassian Process if interactions are expected.
 * [**Top-Two Thompson Sampling**](https://arxiv.org/pdf/1602.08448)
+* [**Population Based Search**](https://arxiv.org/pdf/1711.09846)
 
 ## Criteria for Testing
 * Sample efficiency
