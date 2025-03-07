@@ -23,10 +23,17 @@ class Config:
     }
     num_items_shown: int = 25
     num_samples: list[int] = [100, 1000, 5000, 10000, 50000, 100000, 500000]
+    click_prob: float = np.random.uniform(0.05, 0.25)
+    thread_click_rate: float = np.random.uniform(0.05, 0.25)
+
+
+    def __init__(self, num_params: int = -1):
+        num_params = len(self.hyperparameters) if num_params == -1 else num_params
+        self.hyperparameters = {k: self.hyperparameters[k] for k in list(self.hyperparameters.keys())[:num_params]}
 
     @property
     def highest_possible_reward(self) -> float:
-        return sum(1/(i+1) for i in range(self.num_items_shown))
+        return sum(1/(i+1) for i in range(self.num_items_shown)) * self.thread_click_rate
 
     @property
     def num_arms(self) -> int:
@@ -38,7 +45,7 @@ class Config:
     def _compute_real_world_rewards(self, hparam_combinations: np.ndarray) -> np.ndarray:
         best_arm_idx = [np.random.randint(0, len(v)) for v in self.hyperparameters.values()]
         best_values = np.array([v[best_arm_idx[i]] for i, v in enumerate(self.hyperparameters.values())])
-        stdevs = np.array([1.0, 0.05, 1.0, 1.0, 1.0, 1.0], dtype=float)
+        stdevs = np.array([1.0, 0.05, 1.0, 1.0, 1.0, 1.0], dtype=float)[:len(self.hyperparameters.keys())]
         rho = np.array([
             [1.0,  0.8,  0.0,  0.0,  0.0,  0.0],
             [0.8,  1.0,  0.0,  0.0,  0.0,  0.0],
@@ -46,12 +53,12 @@ class Config:
             [0.0,  0.0,  0.0,  1.0,  0.8,  0.5],
             [0.0,  0.0,  0.0,  0.8,  1.0,  0.5],
             [0.0,  0.0,  0.0,  0.5,  0.5,  1.0],
-        ])
+        ])[:len(self.hyperparameters.keys()), :len(self.hyperparameters.keys())]
         Sigma = np.outer(stdevs, stdevs) * rho
         Sigma_inv = np.linalg.inv(Sigma)
         mean_values = np.array([np.array(v).mean() for v in self.hyperparameters.values()])
         all_raw = np.array([np.exp(-0.01 * diff @ Sigma_inv @ diff) for combo in hparam_combinations if (diff := (combo - best_values) / mean_values) is not None])
-        frac_low = (all_raw <= 0.1).sum() / len(all_raw)
+        frac_low = (all_raw <= 0.05).sum() / len(all_raw)
         assert frac_low  <= 0.75, f"Too many low scores {frac_low}"
         max_raw = np.max(all_raw)
         # Scale so the best combination gets "highest_val"
@@ -62,7 +69,7 @@ class Config:
         return np.random.uniform(0, self.highest_possible_reward, size=len(hparam_combinations))
 
 def test():
-    conf = Config()
+    conf = Config(num_params=4)
 
     hparam_combinations = all_hparam_combinations(conf.hyperparameters)
     num_arms = conf.num_arms
@@ -74,6 +81,8 @@ def test():
     ranks = np.argsort(reward_means)[::-1]
     print(f"Real known best arm: {real_best_arm}")
     print(f"Best combination: {hparam_combinations[real_best_arm]}")
+    print(f"CTR: {conf.click_prob:.4f}")
+    print(f"Thread CTR: {conf.thread_click_rate:.4f}")
 
     algorithms_to_test = [
         PopulationBasedSearch,
@@ -88,13 +97,22 @@ def test():
         print(f"Testing {algorithm_cls.__name__}")
         for num_samples in conf.num_samples:
             hyper_param_tuner = algorithm_cls(hparam_combinations, param_values=list(conf.hyperparameters.values()))
+            regret = 0
             for _ in trange(num_samples, leave=False):
                 idx_to_try, _ = hyper_param_tuner.sample()
-                current_reward = np.random.normal(reward_means[idx_to_try], 1)
+                current_reward = max(np.random.normal(reward_means[idx_to_try], 1), 0) * (np.random.random() < conf.click_prob)
                 hyper_param_tuner.update(idx_to_try, current_reward)
+                regret += reward_means[real_best_arm] - current_reward
             predicted_best_arm = hyper_param_tuner.best_known_combination()[0]
             best_arm_rank_index = np.where(ranks == predicted_best_arm)[0][0] + 1
-            print(f"#samples: {num_samples}, Predicted Best arm: {predicted_best_arm}, Rank of predicted best arm: {best_arm_rank_index}")
+            print(
+                f"#samples: {num_samples}, \
+                Predicted Best arm: {predicted_best_arm}, \
+                Rank of predicted best arm: {best_arm_rank_index}, \
+                Top %ile: {best_arm_rank_index / num_arms * 100:.2f}, \
+                Total Regret: {regret:.2f}, \
+                Normalized Regret: {regret / num_samples:.2f}"
+            )
             if predicted_best_arm == real_best_arm:
                 break
 
