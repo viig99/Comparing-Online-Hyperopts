@@ -6,6 +6,7 @@ from algos.rasha import RandomAsynchronousSuccessiveHalvingAlgorithm
 from algos.thompson_sampler import NormalInverseGammaThompsonSampler, TopTwoNormalInverseGammaThompsonSampler
 from algos.factorized_bayesian import FactorizedThompsonSampler
 from algos.popsearch import PopulationBasedSearch
+from algos.ucb1 import UCB1Sampler
 from rich.table import Table
 from rich.console import Console
 
@@ -95,6 +96,7 @@ def test():
     algorithms_to_test = [
         PopulationBasedSearch,
         RandomAsynchronousSuccessiveHalvingAlgorithm,
+        UCB1Sampler,
         FactorizedThompsonSampler,
         NormalInverseGammaThompsonSampler,
         TopTwoNormalInverseGammaThompsonSampler
