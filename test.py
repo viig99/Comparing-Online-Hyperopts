@@ -78,7 +78,7 @@ class Config:
         return np.random.uniform(0, self.highest_possible_reward, size=len(hparam_combinations))
 
 def test():
-    conf = Config(num_params=4, reward_strategy="real_world")
+    conf = Config(num_params=4, reward_strategy="uniform")
 
     hparam_combinations = all_hparam_combinations(conf.hyperparameters)
     num_arms = conf.num_arms
@@ -105,7 +105,7 @@ def test():
     # Test performance of different algorithms
     for algorithm_cls in algorithms_to_test:
         headers = ["#samples", "Predicted Best arm", "Rank of predicted best arm", "Top %ile", "Total Regret"]
-        table = Table(*headers, title=f"{algorithm_cls.__name__}")
+        table = Table(*headers, title=f"{algorithm_cls.__name__}", show_lines=True)
         for num_samples in conf.num_samples:
             hyper_param_tuner = algorithm_cls(hparam_combinations, param_values=list(conf.hyperparameters.values()))
             regret = 0
