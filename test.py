@@ -124,7 +124,7 @@ def test():
                           f"{regret:.4f}")
             if predicted_best_arm == real_best_arm:
                 break
-        console = Console()
+        console = Console(log_time=False)
         console.log(table)
 
 if __name__ == "__main__":
